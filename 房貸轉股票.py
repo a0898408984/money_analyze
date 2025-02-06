@@ -17,8 +17,10 @@ test_num=100000
 import os
 
 
-
-savefiledir = r'to/your/log/path/dir'
+savefiledir = f'{os.path.dirname(os.path.abspath(__file__))}/log'
+# if no dir, make dir
+if not os.path.exists(savefiledir):
+    os.makedirs(savefiledir)
 savefilename = f'房貸轉股票_{分N期}期_{年借錢利息:.4f}_{年化報酬_趴:.2f}_{年化標準差_趴:.2f}_'
 maxnum = -1
 for x in os.listdir(savefiledir):
