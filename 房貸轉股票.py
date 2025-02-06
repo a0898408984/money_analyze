@@ -1,16 +1,18 @@
 import numpy as np
-年化報酬_趴 = 0.15 # user input
-年化標準差_趴 = 0.20 # user input
-相關費用_萬 = 0.53  # user input
-借錢_萬 = 100  # user input
-年借錢利息 = 0.032  # user input
-分N期 = 12*20  # user input
-內扣_趴 = 0.006  # user input
-股票手續費 = 0.001425  # user input
+
+# User inputs
+annual_return_rate = 0.15  # 年化報酬率 (%) - Annual return rate (as a decimal) # user input
+annual_std_dev = 0.20  # 年化標準差 (%) - Annual standard deviation (as a decimal) # user input
+related_fees_10k = 0.53  # 相關費用 (萬) - Related fees (in 10k NTD) # user input
+loan_amount_10k = 100  # 借款金額 (萬) - Loan amount (in 10k NTD) # user input
+annual_loan_interest = 0.032  # 年借款利率 (%) - Annual loan interest rate (as a decimal) # user input
+installments = 12 * 20  # 分期數 (N期) - Number of installments (e.g., 20 years = 240 months) # user input
+deduction_rate = 0.006  # 內扣費用 (%) - Upfront deduction rate (as a decimal) # user input
+stock_fee_rate = 0.001425  # 股票手續費 (%) - Stock transaction fee rate (as a decimal) # user input
 # 交易稅減半至2027(用原價計算)
-交易稅_趴 = 0.001  # user input (一般買賣0.3, 當沖=0.15, etf=0.1)
-股票手續費_打折 = 0.6 # user input
-總投資額_萬 = 借錢_萬-相關費用_萬
+tax_rate = 0.001  # 交易稅 (%) - Transaction tax rate (as a decimal) (General = 0.3%, Day trading = 0.15%, ETF = 0.1%) # user input
+stock_fee_discount = 0.6  # 股票手續費折扣 - Stock transaction fee discount (e.g., 60% of the original fee) # user input
+total_investment_10k = loan_amount_10k - related_fees_10k  # 總投資額 (萬) - Total investable amount (in 10k NTD)
 init_etf_price = 100 # user input
 if_show_maximal = True # user input
 test_num=100000
@@ -21,7 +23,7 @@ savefiledir = f'{os.path.dirname(os.path.abspath(__file__))}/log'
 # if no dir, make dir
 if not os.path.exists(savefiledir):
     os.makedirs(savefiledir)
-savefilename = f'房貸轉股票_{分N期}期_{年借錢利息:.4f}_{年化報酬_趴:.2f}_{年化標準差_趴:.2f}_'
+savefilename = f'房貸轉股票_{installments}期_{annual_loan_interest:.4f}_{annual_return_rate:.2f}_{annual_std_dev:.2f}_'
 maxnum = -1
 for x in os.listdir(savefiledir):
     if x.find(savefilename) != -1 and x.find('.txt') != -1:
@@ -37,17 +39,17 @@ savefilename = f'{savefilename}{maxnum+1}.txt'
 logpath = f"{savefiledir}/{savefilename}"
 with open(logpath,'w',encoding='utf-8') as f:
     f.write(
-        f'年化報酬_趴: {年化報酬_趴}\n'
-        f'年化標準差_趴: {年化標準差_趴}\n'
-        f'相關費用_萬: {相關費用_萬}\n'
-        f'借錢_萬: {借錢_萬}\n'
-        f'年借錢利息: {年借錢利息}\n'
-        f'分N期: {分N期}\n'
-        f'內扣_趴: {內扣_趴}\n'
-        f'股票手續費: {股票手續費}\n'
-        f'交易稅_趴: {交易稅_趴}\n'
-        f'股票手續費_打折: {股票手續費_打折}\n'
-        f'總投資額_萬: {總投資額_萬}\n'
+        f'年化報酬_趴: {annual_return_rate}\n'
+        f'年化標準差_趴: {annual_std_dev}\n'
+        f'相關費用_萬: {related_fees_10k}\n'
+        f'借錢_萬: {loan_amount_10k}\n'
+        f'年借錢利息: {annual_loan_interest}\n'
+        f'分N期: {installments}\n'
+        f'內扣_趴: {deduction_rate}\n'
+        f'股票手續費: {stock_fee_rate}\n'
+        f'交易稅_趴: {tax_rate}\n'
+        f'股票手續費_打折: {stock_fee_discount}\n'
+        f'總投資額_萬: {total_investment_10k}\n'
         f'init_etf_price: {init_etf_price}\n'
         f'if_show_maximal: {if_show_maximal}\n'
         f'test_num: {test_num}\n'
@@ -55,104 +57,105 @@ with open(logpath,'w',encoding='utf-8') as f:
 
 
 
-期借錢利期 = 年借錢利息 / 12
-月化投報_趴 =年化報酬_趴 / 12
-月化標準差_趴 = 年化標準差_趴 / (12) ** 0.5
-txt = f'月化投報: {月化投報_趴}'
+monthly_loan_interest = annual_loan_interest / 12  # 期借款利率 - Monthly loan interest rate
+monthly_return_rate = annual_return_rate / 12  # 月化投報率 (%) - Monthly return rate (as a decimal)
+monthly_std_dev = annual_std_dev / (12) ** 0.5  # 月化標準差 (%) - Monthly standard deviation (as a decimal)
+
+txt = f'月化投報: {monthly_return_rate}'
 print(txt)
 with open(logpath,'a',encoding='utf-8') as f:
     f.write(txt+'\n')
 
-txt = f'月化投報: {月化投報_趴}'
+txt = f'月化投報: {monthly_return_rate}'
 print(txt)
 with open(logpath,'a',encoding='utf-8') as f:
     f.write(txt+'\n')
 
-r = 期借錢利期 
-n = 分N期
-月繳_萬 = 借錢_萬*(1+r)**n/((1+r)**n - 1) * r 
-txt = f'月繳_萬: {月繳_萬}'
+r = monthly_loan_interest 
+n = installments
+monthly_payment_10k = loan_amount_10k*(1+r)**n/((1+r)**n - 1) * r   # 月繳 (萬) - Monthly payment to the loan (in 10k NTD)
+txt = f'月繳_萬: {monthly_payment_10k}'
 print(txt)
 with open(logpath,'a',encoding='utf-8') as f:
     f.write(txt+'\n')
 
 
 
-def 考慮相關費用後的年利率(年借錢利息,借錢_萬,分N期,月繳_萬,相關費用_萬):
-    # 考慮相關費用後的年利率
-    total總年利率 = -1
+def Annual_interest_rate_after_considering_related_fees(annual_loan_interest,loan_amount_10k,installments,monthly_payment_10k,related_fees_10k):
+    # 考慮相關費用後的年利率 Annual_interest_rate_after_considering_related_fees
+    Total_annual_interest_rate = -1
     findminidx = -1
     findminidx_tmp = 1000000000000
-    n = 分N期
-    r = 年借錢利息/12
+    n = installments
+    r = annual_loan_interest/12
     for i in range(0, 10001):
-        tmp_r = 年借錢利息 + i/50000
-        tmp_月繳 = 借錢_萬*(1+tmp_r/12)**n/((1+tmp_r/12)**n - 1) * tmp_r/12
-        if abs(tmp_月繳*分N期 - (月繳_萬*分N期+相關費用_萬)) < findminidx_tmp:
+        tmp_r = annual_loan_interest + i/50000
+        tmp_月繳 = loan_amount_10k*(1+tmp_r/12)**n/((1+tmp_r/12)**n - 1) * tmp_r/12
+        if abs(tmp_月繳*installments - (monthly_payment_10k*installments+related_fees_10k)) < findminidx_tmp:
             findminidx = i
-            findminidx_tmp = abs(tmp_月繳*分N期 - (月繳_萬*分N期+相關費用_萬))
-        if tmp_月繳*分N期 > (月繳_萬*分N期+相關費用_萬):
+            findminidx_tmp = abs(tmp_月繳*installments - (monthly_payment_10k*installments+related_fees_10k))
+        if tmp_月繳*installments > (monthly_payment_10k*installments+related_fees_10k):
             break
-    total總年利率 = 年借錢利息 + findminidx/50000
-    return total總年利率
+    Total_annual_interest_rate = annual_loan_interest + findminidx/50000
+    return Total_annual_interest_rate
 
-total總年利率 = 考慮相關費用後的年利率(年借錢利息,借錢_萬,分N期,月繳_萬,相關費用_萬)
+Total_annual_interest_rate = Annual_interest_rate_after_considering_related_fees(annual_loan_interest,loan_amount_10k,installments,monthly_payment_10k,related_fees_10k)
 
 
-txt=f'原本 {年借錢利息:.5f} total總年利率: {total總年利率:.5f}'
+txt=f'原本 {annual_loan_interest:.5f} total總年利率: {Total_annual_interest_rate:.5f}'
 print(txt)
 with open(logpath,'a',encoding='utf-8') as f:
     f.write(txt+'\n')
 
 
 
-def stimulation_once(內扣_趴=內扣_趴,
-                    股票手續費=股票手續費,
-                    交易稅_趴=交易稅_趴,
-                    股票手續費_打折=股票手續費_打折,
-                    月化投報_趴=月化投報_趴,
-                    月化標準差_趴=月化標準差_趴,
-                    總投資額_萬=總投資額_萬,
-                    分N期=分N期,
-                    月繳 = 月繳_萬,
+def stimulation_once(deduction_rate=deduction_rate,
+                    stock_fee_rate=stock_fee_rate,
+                    tax_rate=tax_rate,
+                    stock_fee_discount=stock_fee_discount,
+                    monthly_return_rate=monthly_return_rate,
+                    monthly_std_dev=monthly_std_dev,
+                    total_investment_10k=total_investment_10k,
+                    installments=installments,
+                    monthly_payment_10k = monthly_payment_10k,
                     init_etf_price = init_etf_price,
                     if_print = True,
                      ):
     
-    股票手續費 = 股票手續費 * 股票手續費_打折
-    月化投報_趴 = 月化投報_趴 - 內扣_趴/12  
-
+    stock_fee_rate = stock_fee_rate * stock_fee_discount
+    monthly_return_rate = monthly_return_rate - deduction_rate/12  
     init_etf_price = 100 
     etf_price = init_etf_price
-    etf_init_num_股 = int(總投資額_萬 / init_etf_price * (1-股票手續費) * 10000)
-    月繳 = int(月繳_萬*10000)
+    etf_init_num_股 = int(total_investment_10k / init_etf_price * (1-stock_fee_rate) * 10000)
+    monthly_payment_10k = int(monthly_payment_10k*10000)
     etf_price_list = [init_etf_price]
     if if_print:
         print('etf_init_num_股:', etf_init_num_股)
         
-    盈餘股數 = 0
-    負債 = 0
-    for i in range(1, 分N期+1):
-        etf_price = etf_price * (1 + np.random.normal(月化投報_趴, 月化標準差_趴))
+    surplus_shares = 0  # 盈餘股數 - Surplus shares (number of shares available)
+    debt = 0  # 負債 - Debt (amount of outstanding debt)
+    for i in range(1, installments+1):
+        etf_price = etf_price * (1 + np.random.normal(monthly_return_rate, monthly_std_dev))
         etf_price_list.append(etf_price)
-        月賣股數 = int(月繳/(1-股票手續費-交易稅_趴)/etf_price)
-        etf_init_num_股 -= 月賣股數
+        monthly_sell_shares = int(monthly_payment_10k/(1-stock_fee_rate-tax_rate)/etf_price)  # 月賣股數 - Number of shares to sell per month (for loan repayment)
+        etf_init_num_股 -= monthly_sell_shares  
         if etf_init_num_股<=0:
-            負債 += 月繳 - (etf_init_num_股+月賣股數)*(1-股票手續費-交易稅_趴)*etf_price
-            負債 += 月繳*(分N期 - i)
+            debt += monthly_payment_10k - (etf_init_num_股+monthly_sell_shares )*(1-stock_fee_rate-tax_rate)*etf_price
+            debt += monthly_payment_10k*(installments - i)
             etf_init_num_股 = 0
         if if_print:
-            總負債txt = f"/股數已清空若要還清剩餘貸款負債: {int(負債)}" if 負債 > 0 else ''
-            print(f'月繳 {月繳} ( 第{i} 需月賣股數: {月賣股數} /剩餘股數: {etf_init_num_股} /股價: {etf_price:.2f} {總負債txt})')
+            tmptxt = f"/股數已清空若要還清剩餘貸款負債: {int(debt)}" if debt > 0 else ''
+            txt = f'月繳 {monthly_payment_10k} ( 第{i} 需月賣股數: {monthly_sell_shares } /剩餘股數: {etf_init_num_股} /股價: {etf_price:.2f} {tmptxt})'
+            print(txt)
         if etf_init_num_股<=0:
             break
-    盈餘股數 = etf_init_num_股
-    盈餘 = etf_init_num_股*etf_price if etf_init_num_股 > 0 else -負債
+    surplus_shares = etf_init_num_股
+    surplus  = etf_init_num_股*etf_price if etf_init_num_股 > 0 else -debt   # 盈餘 - Surplus, calculated from initial ETF shares or debt
     return {
-        "負債": 負債,
-        "盈餘股數": 盈餘股數,
+        "負債": debt,
+        "盈餘股數": surplus_shares,
         "etf_price_list": etf_price_list,
-        "盈餘": 盈餘,
+        "盈餘": surplus ,
     }
 
 from tqdm import tqdm
