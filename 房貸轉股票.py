@@ -6,7 +6,7 @@ annual_std_dev = 0.20  # 年化標準差 (%) - Annual standard deviation (as a d
 related_fees_10k = 0.53  # 相關費用 (萬) - Related fees (in 10k NTD) # user input
 loan_amount_10k = 100  # 借款金額 (萬) - Loan amount (in 10k NTD) # user input
 annual_loan_interest = 0.032  # 年借款利率 (%) - Annual loan interest rate (as a decimal) # user input
-installments = 12 * 20  # 分期數 (N期) - Number of installments (e.g., 20 years = 240 months) # user input
+installments = 12 * 7  # 分期數 (N期) - Number of installments (e.g., 20 years = 240 months) # user input
 deduction_rate = 0.006  # 內扣費用 (%) - Upfront deduction rate (as a decimal) # user input
 stock_fee_rate = 0.001425  # 股票手續費 (%) - Stock transaction fee rate (as a decimal) # user input
 # 交易稅減半至2027(用原價計算)

@@ -29,22 +29,22 @@ Additionally, by setting the related costs to **0 NTD**, the tool can also **sim
 ### 📆 **Short-Term Repayment Plan (84 Installments)**
 
 - **Monthly Payment**: **13,303 NTD**
-- **Expected Profit**: **805,214 NTD (+180%)**
-- **Loss Probability**: **17%** (16,440 out of 100,000 simulations)
+- **Expected Profit**: **824,228 NTD (+82%)**
+- **Loss Probability**: **17%** (15,920 out of 100,000 simulations)
 
 ### 📆 **Long-Term Repayment Plan (240 Installments)**
 
 - **Monthly Payment**: **5,646 NTD**
-- **Expected Profit**: **9,828,859 NTD (+1080%)**
-- **Loss Probability**: **6%** (5,314 out of 100,000 simulations)
+- **Expected Profit**: **9,945,344 NTD (+990%)**
+- **Loss Probability**: **6%** (5,280 out of 100,000 simulations)
 
-### 📆 **Short-Term Monthly Salary Investment Plan (84 Installments)**
+### 📆 **Short-Term Monthly Salary Investment Plan (84 Installments)** ( no related fee )
 
 - **Monthly Payment**: **13,303 NTD**
 - **Expected Profit**: **805,214 NTD (+180%)**
 - **Loss Probability**: **17%** (16,440 out of 100,000 simulations)
 
-### 📆 **Long-Term Monthly Salary Investment Plan (240 Installments)**
+### 📆 **Long-Term Monthly Salary Investment Plan (240 Installments)** ( no related fee )
 
 - **Monthly Payment**: **5,646 NTD**
 - **Expected Profit**: **9,828,859 NTD (+1080%)**
@@ -59,4 +59,3 @@ Additionally, by setting the related costs to **0 NTD**, the tool can also **sim
 3. **Key Risk Factors**: The **investment volatility (20% standard deviation)** significantly affects actual returns. Investors should carefully consider their **risk tolerance** and **financial situation** before choosing a plan.
 
 🔹 **Investments carry risks. Please evaluate your financial status and risk tolerance carefully before making any financial decisions!**
-
